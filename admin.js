@@ -71,6 +71,19 @@ const formatDateTime = (value) => {
   return date.toLocaleString("pt-BR");
 };
 
+const setField = (el, value) => {
+  if (!el) return;
+  const isTerm = el.id === "detailTerm";
+  const textValue =
+    value === null || value === undefined || value === "" ? (isTerm ? "" : "-") : String(value);
+
+  if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+    el.value = textValue;
+  } else {
+    el.textContent = textValue;
+  }
+};
+
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   setStatus("Configure SUPABASE_URL e SUPABASE_ANON_KEY no admin.html.", "error");
   loginForm.querySelector("button[type='submit']").disabled = true;
@@ -169,12 +182,12 @@ const renderTable = (items, total) => {
 };
 
 const openDetails = (item) => {
-  detailVersion.textContent = item.term_version || "-";
-  detailHash.textContent = item.term_hash_sha256 || "-";
-  detailAcceptedAt.textContent = formatDateTime(item.accepted_at);
-  detailIp.textContent = item.accepted_ip || "-";
-  detailAgent.textContent = item.accepted_user_agent || "-";
-  detailTerm.textContent = item.term_text || "";
+  setField(detailVersion, item.term_version);
+  setField(detailHash, item.term_hash_sha256);
+  setField(detailAcceptedAt, formatDateTime(item.accepted_at));
+  setField(detailIp, item.accepted_ip);
+  setField(detailAgent, item.accepted_user_agent);
+  setField(detailTerm, item.term_text);
   detailsModal.hidden = false;
 };
 
