@@ -31,6 +31,7 @@ const detailTerm = document.getElementById("detailTerm");
 
 let currentItems = [];
 let currentSession = null;
+let bodyOverflow = "";
 
 const showView = (view) => {
   loginView.hidden = view !== "login";
@@ -182,6 +183,7 @@ const renderTable = (items, total) => {
 };
 
 const openDetails = (item) => {
+  if (!detailsModal) return;
   setField(detailVersion, item.term_version);
   setField(detailHash, item.term_hash_sha256);
   setField(detailAcceptedAt, formatDateTime(item.accepted_at));
@@ -189,10 +191,18 @@ const openDetails = (item) => {
   setField(detailAgent, item.accepted_user_agent);
   setField(detailTerm, item.term_text);
   detailsModal.hidden = false;
+  if (document.body) {
+    bodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  }
 };
 
 const closeDetails = () => {
+  if (!detailsModal) return;
   detailsModal.hidden = true;
+  if (document.body) {
+    document.body.style.overflow = bodyOverflow;
+  }
 };
 
 const fetchList = async () => {
@@ -369,9 +379,20 @@ tableBody.addEventListener("click", (event) => {
   }
 });
 
-closeModal.addEventListener("click", closeDetails);
-detailsModal.addEventListener("click", (event) => {
-  if (event.target === detailsModal) closeDetails();
+if (closeModal) {
+  closeModal.addEventListener("click", closeDetails);
+}
+
+if (detailsModal) {
+  detailsModal.addEventListener("click", (event) => {
+    if (event.target === detailsModal) closeDetails();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && detailsModal && !detailsModal.hidden) {
+    closeDetails();
+  }
 });
 
 const init = async () => {

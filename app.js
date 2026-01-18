@@ -74,6 +74,7 @@ const signatureState = {
 };
 
 const signatureContext = signatureCanvas.getContext("2d");
+const supportsPointerEvents = "PointerEvent" in window;
 
 const onlyDigits = (value) => (value || "").replace(/\D/g, "");
 
@@ -418,24 +419,46 @@ const resizeCanvas = () => {
 
 const getCanvasPoint = (event) => {
   const rect = signatureCanvas.getBoundingClientRect();
+  let clientX = event.clientX;
+  let clientY = event.clientY;
+
+  if (event.touches && event.touches[0]) {
+    clientX = event.touches[0].clientX;
+    clientY = event.touches[0].clientY;
+  } else if (event.changedTouches && event.changedTouches[0]) {
+    clientX = event.changedTouches[0].clientX;
+    clientY = event.changedTouches[0].clientY;
+  }
+
   return {
-    x: event.clientX - rect.left,
-    y: event.clientY - rect.top,
+    x: clientX - rect.left,
+    y: clientY - rect.top,
   };
 };
 
+const preventSignatureDefault = (event) => {
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+};
+
 const startSignature = (event) => {
-  signatureCanvas.setPointerCapture(event.pointerId);
+  preventSignatureDefault(event);
   const point = getCanvasPoint(event);
   signatureState.isDrawing = true;
   signatureState.hasSignature = true;
   signatureError.textContent = "";
   signatureContext.beginPath();
   signatureContext.moveTo(point.x, point.y);
+
+  if (event.pointerId !== undefined && signatureCanvas.setPointerCapture) {
+    signatureCanvas.setPointerCapture(event.pointerId);
+  }
 };
 
 const drawSignature = (event) => {
   if (!signatureState.isDrawing) return;
+  preventSignatureDefault(event);
   const point = getCanvasPoint(event);
   signatureContext.lineTo(point.x, point.y);
   signatureContext.stroke();
@@ -443,12 +466,17 @@ const drawSignature = (event) => {
 
 const endSignature = (event) => {
   if (!signatureState.isDrawing) return;
+  preventSignatureDefault(event);
   signatureState.isDrawing = false;
-  signatureCanvas.releasePointerCapture(event.pointerId);
+
+  if (event.pointerId !== undefined && signatureCanvas.releasePointerCapture) {
+    signatureCanvas.releasePointerCapture(event.pointerId);
+  }
 };
 
 const clearSignature = () => {
   signatureContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+  signatureState.isDrawing = false;
   signatureState.hasSignature = false;
   signatureError.textContent = "";
 };
@@ -590,11 +618,25 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-signatureCanvas.addEventListener("pointerdown", startSignature);
-signatureCanvas.addEventListener("pointermove", drawSignature);
-signatureCanvas.addEventListener("pointerup", endSignature);
-signatureCanvas.addEventListener("pointerleave", endSignature);
-signatureCanvas.addEventListener("pointercancel", endSignature);
+if (supportsPointerEvents) {
+  signatureCanvas.addEventListener("pointerdown", startSignature);
+  signatureCanvas.addEventListener("pointermove", drawSignature);
+  signatureCanvas.addEventListener("pointerup", endSignature);
+  signatureCanvas.addEventListener("pointerleave", endSignature);
+  signatureCanvas.addEventListener("pointercancel", endSignature);
+} else {
+  signatureCanvas.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) return;
+    startSignature(event);
+  });
+  signatureCanvas.addEventListener("mousemove", drawSignature);
+  window.addEventListener("mouseup", endSignature);
+
+  signatureCanvas.addEventListener("touchstart", startSignature, { passive: false });
+  signatureCanvas.addEventListener("touchmove", drawSignature, { passive: false });
+  window.addEventListener("touchend", endSignature, { passive: false });
+  window.addEventListener("touchcancel", endSignature, { passive: false });
+}
 clearSignatureBtn.addEventListener("click", clearSignature);
 window.addEventListener("resize", resizeCanvas);
 

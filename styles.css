@@ -298,6 +298,7 @@ body::before {
   border-radius: 18px;
   background: #fff;
   border: 1px solid var(--line);
+  user-select: none;
 }
 
 .signature-block h3 {
@@ -313,6 +314,7 @@ body::before {
   background: #faf9f7;
   margin: 14px 0;
   touch-action: none;
+  cursor: crosshair;
 }
 
 .signature-actions {

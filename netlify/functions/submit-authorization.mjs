@@ -49,6 +49,29 @@ const wrapText = (text, font, size, maxWidth) => {
   return lines;
 };
 
+const ensureBucketExists = async (supabase, bucketName) => {
+  const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+  if (listError) {
+    console.error("Storage listBuckets error", listError);
+    return { ok: false, message: "Erro ao verificar bucket no Supabase Storage." };
+  }
+
+  const exists = (buckets || []).some((bucket) => bucket.name === bucketName);
+  if (exists) return { ok: true };
+
+  const { error: createError } = await supabase.storage.createBucket(bucketName, { public: false });
+  if (createError) {
+    const message = createError.message?.toLowerCase() || "";
+    if (createError.status === 409 || message.includes("already exists")) {
+      return { ok: true };
+    }
+    console.error("Storage createBucket error", createError);
+    return { ok: false, message: "Falha ao criar bucket no Supabase Storage." };
+  }
+
+  return { ok: true };
+};
+
 const buildPdf = async ({
   guardian,
   student,
@@ -172,8 +195,14 @@ export const handler = async (event) => {
     return jsonResponse(405, { message: "Metodo nao permitido." });
   }
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return jsonResponse(500, { message: "Variaveis de ambiente do Supabase nao configuradas." });
+  if (!SUPABASE_URL) {
+    return jsonResponse(500, { message: "Configure SUPABASE_URL no Netlify." });
+  }
+  if (!SUPABASE_SERVICE_ROLE_KEY) {
+    return jsonResponse(500, { message: "Configure SUPABASE_SERVICE_ROLE_KEY no Netlify." });
+  }
+  if (!SUPABASE_BUCKET) {
+    return jsonResponse(500, { message: "Configure SUPABASE_BUCKET no Netlify." });
   }
 
   let payload;
@@ -379,6 +408,11 @@ export const handler = async (event) => {
     return jsonResponse(500, { message: "Erro ao gerar PDF." });
   }
 
+  const bucketCheck = await ensureBucketExists(supabase, SUPABASE_BUCKET);
+  if (!bucketCheck.ok) {
+    return jsonResponse(500, { message: bucketCheck.message });
+  }
+
   const storagePath = `${cpf}/${authorizationData.id}.pdf`;
 
   const { error: uploadError } = await supabase.storage
@@ -387,7 +421,11 @@ export const handler = async (event) => {
 
   if (uploadError) {
     console.error("Storage upload error", uploadError);
-    return jsonResponse(500, { message: "Erro ao salvar PDF." });
+    const uploadMessage = uploadError.message?.toLowerCase() || "";
+    if (uploadMessage.includes("bucket")) {
+      return jsonResponse(500, { message: "Bucket nao encontrado no Supabase Storage." });
+    }
+    return jsonResponse(500, { message: "Erro ao salvar PDF no Supabase Storage." });
   }
 
   const { error: documentError } = await supabase.from("documents").insert({
