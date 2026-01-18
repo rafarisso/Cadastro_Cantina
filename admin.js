@@ -190,7 +190,7 @@ const openDetails = (item) => {
   setField(detailIp, item.accepted_ip);
   setField(detailAgent, item.accepted_user_agent);
   setField(detailTerm, item.term_text);
-  detailsModal.hidden = false;
+  detailsModal.removeAttribute("hidden");
   if (document.body) {
     bodyOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -199,7 +199,7 @@ const openDetails = (item) => {
 
 const closeDetails = () => {
   if (!detailsModal) return;
-  detailsModal.hidden = true;
+  detailsModal.setAttribute("hidden", "");
   if (document.body) {
     document.body.style.overflow = bodyOverflow;
   }
@@ -390,7 +390,7 @@ if (detailsModal) {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && detailsModal && !detailsModal.hidden) {
+  if (event.key === "Escape" && detailsModal && !detailsModal.hasAttribute("hidden")) {
     closeDetails();
   }
 });

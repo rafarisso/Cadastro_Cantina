@@ -422,3 +422,7 @@ td.actions {
     min-width: 820px;
   }
 }
+
+.modal[hidden] {
+  display: none !important;
+}

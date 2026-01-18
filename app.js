@@ -389,7 +389,10 @@ const showStep = (index) => {
   nextBtn.style.display = index === steps.length - 1 ? "none" : "inline-flex";
   submitBtn.style.display = index === steps.length - 1 ? "inline-flex" : "none";
 
-  if (index === 2) updateTermText();
+  if (index === 2) {
+    updateTermText();
+    requestAnimationFrame(() => resizeCanvas());
+  }
   if (index === 3) updateReview();
 };
 
@@ -479,6 +482,7 @@ const clearSignature = () => {
   signatureState.isDrawing = false;
   signatureState.hasSignature = false;
   signatureError.textContent = "";
+  resizeCanvas();
 };
 
 let lastCepLookup = "";
@@ -638,6 +642,7 @@ if (supportsPointerEvents) {
   window.addEventListener("touchcancel", endSignature, { passive: false });
 }
 clearSignatureBtn.addEventListener("click", clearSignature);
+signatureCanvas.addEventListener("contextmenu", (event) => event.preventDefault());
 window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
