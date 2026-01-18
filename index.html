@@ -1,0 +1,243 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cantina Órion | Atualização de Cadastro e Autorização</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <div class="brand">
+          <img src="./images/logo.png" alt="Cantina Órion" class="logo" />
+          <div>
+            <p class="brand-kicker">Cantina Órion</p>
+            <h1>Atualização de cadastro e autorização para compra faturada</h1>
+            <p class="brand-subtitle">
+              Formulário oficial para atualização de dados do responsável legal e autorização de compras pós-pagas.
+            </p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <span>WhatsApp / Pix</span>
+          <strong>(11) 99829-8331</strong>
+        </div>
+      </header>
+
+      <main class="card">
+        <div class="steps">
+          <div class="step-indicator active" data-step-indicator="0">
+            <span>1</span>
+            <div>
+              <strong>Responsável</strong>
+              <small>Dados pessoais</small>
+            </div>
+          </div>
+          <div class="step-indicator" data-step-indicator="1">
+            <span>2</span>
+            <div>
+              <strong>Aluno</strong>
+              <small>Turma e período</small>
+            </div>
+          </div>
+          <div class="step-indicator" data-step-indicator="2">
+            <span>3</span>
+            <div>
+              <strong>Termo</strong>
+              <small>Aceite + assinatura</small>
+            </div>
+          </div>
+          <div class="step-indicator" data-step-indicator="3">
+            <span>4</span>
+            <div>
+              <strong>Revisão</strong>
+              <small>Envio final</small>
+            </div>
+          </div>
+        </div>
+
+        <form id="wizardForm" novalidate>
+          <section class="step active" data-step="0">
+            <h2>Responsável legal</h2>
+            <p class="step-lead">
+              Preencha os dados obrigatórios com atenção. Todos os campos marcados com * são obrigatórios.
+            </p>
+
+            <div class="grid two">
+              <div class="field">
+                <label for="resp_name">Nome completo*</label>
+                <input id="resp_name" name="resp_name" type="text" autocomplete="name" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_cpf">CPF*</label>
+                <input id="resp_cpf" name="resp_cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_birth">Data de nascimento*</label>
+                <input id="resp_birth" name="resp_birth" type="date" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_email">E-mail*</label>
+                <input id="resp_email" name="resp_email" type="email" autocomplete="email" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_phone1">Telefone principal (WhatsApp)*</label>
+                <input id="resp_phone1" name="resp_phone1" type="tel" inputmode="numeric" placeholder="(11) 90000-0000" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_phone2">Telefone secundário*</label>
+                <input id="resp_phone2" name="resp_phone2" type="tel" inputmode="numeric" placeholder="(11) 90000-0000" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="grid three">
+              <div class="field">
+                <label for="resp_cep">CEP*</label>
+                <input id="resp_cep" name="resp_cep" type="text" inputmode="numeric" placeholder="00000-000" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field span-2">
+                <label for="resp_street">Rua*</label>
+                <input id="resp_street" name="resp_street" type="text" autocomplete="address-line1" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_number">Número*</label>
+                <input id="resp_number" name="resp_number" type="text" autocomplete="address-line2" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_neighborhood">Bairro*</label>
+                <input id="resp_neighborhood" name="resp_neighborhood" type="text" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_city">Cidade*</label>
+                <input id="resp_city" name="resp_city" type="text" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="resp_state">UF*</label>
+                <input id="resp_state" name="resp_state" type="text" maxlength="2" placeholder="SP" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field span-2">
+                <label for="resp_complement">Complemento</label>
+                <input id="resp_complement" name="resp_complement" type="text" />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" data-step="1">
+            <h2>Dados do aluno</h2>
+            <p class="step-lead">Informe os dados do aluno matriculado no Colégio Órion.</p>
+
+            <div class="grid two">
+              <div class="field">
+                <label for="student_name">Nome completo do aluno*</label>
+                <input id="student_name" name="student_name" type="text" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="student_class">Turma/Sala*</label>
+                <input id="student_class" name="student_class" type="text" required />
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="student_period">Período*</label>
+                <select id="student_period" name="student_period" required>
+                  <option value="">Selecione</option>
+                  <option value="manha">Manhã</option>
+                  <option value="tarde">Tarde</option>
+                </select>
+                <div class="field-error" aria-live="polite"></div>
+              </div>
+              <div class="field">
+                <label for="student_school">Escola</label>
+                <input id="student_school" name="student_school" type="text" value="Colégio Órion" readonly />
+              </div>
+            </div>
+          </section>
+
+          <section class="step" data-step="2">
+            <h2>Termo contratual</h2>
+            <p class="step-lead">
+              Leia o termo completo, aceite e assine digitalmente para prosseguir.
+            </p>
+
+            <div class="term-box">
+              <pre id="termText"></pre>
+            </div>
+
+            <label class="check-field">
+              <input id="accept_term" type="checkbox" />
+              <span>Li e concordo integralmente com o termo acima.</span>
+            </label>
+            <div class="field-error" id="accept_error" aria-live="polite"></div>
+
+            <div class="signature-block">
+              <div>
+                <h3>Assinatura eletrônica</h3>
+                <p>Desenhe sua assinatura no campo abaixo usando o mouse ou toque.</p>
+              </div>
+              <canvas id="signatureCanvas" width="640" height="220"></canvas>
+              <div class="signature-actions">
+                <button type="button" id="clearSignature">Limpar assinatura</button>
+                <span class="signature-hint">Assinatura obrigatória para avançar.</span>
+              </div>
+              <div class="field-error" id="signature_error" aria-live="polite"></div>
+            </div>
+          </section>
+
+          <section class="step" data-step="3">
+            <h2>Revisão final</h2>
+            <p class="step-lead">Confira os dados antes de enviar a autorização.</p>
+
+            <div id="reviewBox" class="review-box"></div>
+
+            <div class="notice">
+              Ao enviar, você confirma a veracidade das informações e autoriza a Cantina Órion a registrar o termo.
+            </div>
+          </section>
+
+          <div class="wizard-actions">
+            <button type="button" class="ghost" id="prevBtn">Voltar</button>
+            <div class="wizard-status">
+              <span id="stepLabel">Etapa 1 de 4</span>
+            </div>
+            <button type="button" id="nextBtn">Próximo</button>
+            <button type="submit" id="submitBtn">Enviar autorização</button>
+          </div>
+
+          <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+        </form>
+
+        <div id="successBox" class="success-box" hidden></div>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          CANTINA ÓRION — operação terceirizada e independente. Este formulário não cria vínculo com o Colégio Órion.
+        </p>
+      </footer>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

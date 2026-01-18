@@ -1,0 +1,9 @@
+﻿{
+  "name": "cantina-orion-autorizacao",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.10",
+    "pdf-lib": "^1.17.1"
+  }
+}
