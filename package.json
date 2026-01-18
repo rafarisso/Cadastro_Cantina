@@ -1,9 +1,10 @@
-﻿{
-  "name": "cantina-orion-autorizacao",
+{
+  "name": "cadastro-cantina-orion",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "^2.47.10",
+    "@supabase/supabase-js": "^2.45.0",
     "pdf-lib": "^1.17.1"
   }
 }
