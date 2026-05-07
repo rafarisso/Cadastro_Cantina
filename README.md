@@ -56,7 +56,3 @@ Projeto estatico (HTML/CSS/JS) com Netlify Functions e Supabase para atualizacao
 - `supabase.sql`: tabelas base e RLS.
 - `admin.sql`: roles e policies para admin.
 
-## Observacoes
-
-- Nao coloque `SUPABASE_SERVICE_ROLE_KEY` no front-end.
-- Se aparecer o erro "Unknown character 65279" no deploy, regrave `netlify.toml` em UTF-8 sem BOM (VS Code: Save with Encoding -> UTF-8).
